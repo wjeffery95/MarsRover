@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace src;
 
 use src\Model\Grid;
@@ -25,19 +27,19 @@ class ArgumentInterpreter
     {
         $gridSizeArray = \explode(' ', $gridString);
         if (count($gridSizeArray) !== 2) {
-            throw new \Exception('Invalid number of grid dimensions');
+            throw new \InvalidArgumentException('Invalid number of grid dimensions');
         }
 
         if (!\ctype_digit($gridSizeArray[0])) {
-            throw new \Exception('Invalid x dimension. It must be a positive integer');
+            throw new \InvalidArgumentException('Invalid x dimension. It must be a positive integer');
         }
 
         if (!\ctype_digit($gridSizeArray[1])) {
-            throw new \Exception('Invalid y dimension. It must be a positive integer');
+            throw new \InvalidArgumentException('Invalid y dimension. It must be a positive integer');
         }
 
         // The -1s account for the fact we have a 0th row and column
-        return new Grid( $gridSizeArray[0] - 1, $gridSizeArray[1] - 1);
+        return new Grid((int) $gridSizeArray[0] - 1, (int) $gridSizeArray[1] - 1);
     }
 
     /**
@@ -52,7 +54,7 @@ class ArgumentInterpreter
 
             $isValid = preg_match('/^\(([0-9]+), ([0-9]+), ([NESW])\) ([LRF]+)$/m', $robotString, $matches);
             if (!$isValid) {
-                throw new \Exception(sprintf(
+                throw new \InvalidArgumentException(sprintf(
                     'Row "%s" is invalid. Input rows after the first must take the form of (<x start position (int)>, <y start position (int)>, <initial facing direction (N, E, S or W)>) <list of instruction (L, R or F)>',
                     $robotString
                 ));
@@ -62,7 +64,7 @@ class ArgumentInterpreter
             $initialY = (int) $matches[2];
 
             if ($initialX >= $grid->getWidth() || $initialY >= $grid->getHeight()) {
-                throw new \Exception(\sprintf('Robot for row "%s" would start off grid', $robotString));
+                throw new \InvalidArgumentException(\sprintf('Robot for row "%s" would start off grid', $robotString));
             }
 
             $robots[] = new Robot(
