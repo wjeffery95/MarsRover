@@ -1,10 +1,8 @@
 #!/usr/bin/env  php
+
 <?php
 
-    function __autoload($class)
-    {
-        require str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-    }
+    require __DIR__ . '/vendor/autoload.php';
 
     use src\ArgumentInterpreter;
     use src\RobotResolver;
@@ -20,6 +18,8 @@
         $instructions = $argumentInterpreter->interpret($argv[1]);
     } catch (\Exception $e) {
         echo $e->getMessage();
+        echo PHP_EOL;
+        exit;
     }
 
     $grid = $instructions->getGrid();

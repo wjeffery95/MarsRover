@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace src\Model;
 
 use src\Enum\Instruction;
@@ -12,12 +14,12 @@ class Robot
     private $initialPosition;
 
     /**
-     * @var Instruction[]
+     * @var String[]
      */
     private $instructions;
 
     /**
-     * @param Instruction[] $instructions
+     * @param String[] $instructions
      */
     public function __construct(Position $initialPosition, array $instructions)
     {
@@ -31,7 +33,7 @@ class Robot
     }
 
     /**
-     * @return Instruction[]
+     * @return String[]
      */
     public function getInstructions(): array
     {
